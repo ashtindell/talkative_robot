@@ -1,12 +1,13 @@
+require 'pry'
+
 puts "What is your name?"
+
 user_name = gets.chomp
 
 puts "How old are you?"
 user_age = gets.chomp.to_i
 
 puts "Hi #{user_name}, who is #{user_age} years old!"
-
-# puts "Do you mind if I call you #{user_name[0]}?"
 
 first_initial = user_name.chars.first
 puts "Do you mind if I call you #{first_initial}?"
@@ -19,15 +20,12 @@ user_name.upcase!
 
 puts "Hey #{user_name}, where are you going?"
 
-# puts "Yo \"Dude\", what's up?"
-
-puts %s(Yo "Dude", what's up?)
+puts "Yo 'Dude', what's up?"
 
 puts "What city do you live in?"
-city = gets.chomp.capitalize!
+city = gets.chomp
 
 puts "What state is #{city} in?"
-state = gets.chomp.upcase!
+state = gets.chomp
 
 puts "#{city} is in the state of #{state}."
-
