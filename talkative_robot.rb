@@ -29,3 +29,5 @@ puts "What state is #{city} in?"
 state = gets.chomp
 
 puts "#{city} is in the state of #{state}."
+
+puts " Hey, this is a test!"
