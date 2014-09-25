@@ -1,68 +1,134 @@
 require 'pry'
 
-puts "What is your name?"
-user_name = gets.chomp.capitalize
-
-first_initial = user_name.chars.first
-puts "#{user_name}, do you mind if I call you #{first_initial}?"
-answer = gets.chomp.downcase
-
-puts "Great!" unless answer == "yes"
-
-puts "Too bad. I'm going to anyways!" if answer == "yes"
-
-puts "How old are you?"
-user_age = gets.chomp.to_i
-
-age_less_than_seventy_five = 75 - user_age
-age_more_than_seventy_five = user_age - 75
-
-case
-when user_age < 75
-	puts "You'll be 75 in #{age_less_than_seventy_five} year(s)"
-when user_age > 75
-	puts "You turned 75 #{age_more_than_seventy_five} year(s) ago."
-when user_age == 75
-	puts "You're 75!"
+def greeting
+	puts "Hi there!"
 end
 
-puts "Hi #{first_initial}, who is #{user_age} years old!"
+def get_user_input
+	user = {}
 
-puts "I'm 33 years old too!" if user_age == 33
+	puts "What's your name?"
+	user[:name] = gets.chomp.capitalize
 
-puts user_age >= 16 ? "Yay! You are old enough to drive!" : "You're too young to drive, sorry!"
+	puts "How old are you?"
+	user[:age] = gets.chomp.to_i
 
-if user_age >= 16
-	puts "I need to go to the store...can you take me? yes or no"
-	take_to_store = gets.chomp.downcase
-	puts take_to_store == "yes" ? "Great! Let me grab my wallet." : "You suck!!"
-else
-	user_name.upcase!
-	puts "Hey #{user_name}, where are you going?"
-	puts "Yo 'Dude', what's up? Come back here...I have more questions!"
+	puts "Are you a girl or boy?"
+	user[:gender] = gets.chomp.downcase
+
+	user
 end
 
-puts "What city do you live in?"
-city = gets.chomp.capitalize
+def nickname_message(user)
+	user[:nickname] = user[:name].chars.first
 
-puts "What's the abbreviation for the state #{city} is located?"
-state = gets.chomp.upcase
+	puts "#{user[:name]}, do you mind if I call you #{user[:nickname]}?"
+	answer = gets.chomp.downcase
 
-puts "#{city} is in the state of #{state}."
+	puts "Great!" unless answer == "yes"
 
-puts "Are you a girl or boy?"
-user_gender = gets.chomp.downcase
+	puts "Too bad. I'm going to anyways!" if answer == "yes"
 
-puts "You sure are a young #{user_gender}." if user_age <= 20 
-puts "#{first_initial} is a #{user_gender} who is #{user_age} years old."
-if (user_age >= 100) && (user_gender == "girl")
-	puts "Wow, you're old! You must be a great-great grandmother. Thanks for talking with me today!" 
-elsif (user_age >= 100) && (user_gender == "boy")
-	puts "Wow, you're old! You must be a great-great grandfather. Thanks for talking with me today!"
-else
-	puts "Thanks for talking with me today!"
+	user[:name] = user[:nickname]
+
+	puts "Nice to meet you, #{user[:name]}!"
+end
+
+def age_based_message(user)
+	puts "I'm 33 years old too!" if user[:age] == 33
+
+	case
+	when user[:age] < 75
+		puts "Did you know that you'll be 75 in #{75 - user[:age]} year(s)."
+	when user[:age] > 75
+		puts "Did you know that you turned 75 #{user[:age] - 75} year(s) ago."
+	else
+		puts "You're 75!"
+	end
+
+	puts "You sure are a young #{user[:gender]}." if user[:age] <= 20 
+end
+
+def great_great_grandparent(user)
+	if (user[:age] >= 100) && (user[:gender] == "girl")
+	puts "Wow, you're old! You must be a great-great grandmother." 
+	elsif (user[:age] >= 100) && (user[:gender] == "boy")
+		puts "Wow, you're old! You must be a great-great grandfather."
+	else
+		puts "So, you're not old enough to be a great-great grandparent."
+	end
+end
+
+def user_city_state(user)
+	puts "What city do you live in?"
+	user[:city] = gets.chomp.capitalize
+
+	puts "What state is #{user[:city]} located? (use abbreviation)"
+	user[:state] = gets.chomp.upcase
+
+	puts "That's right! #{user[:city]} is in the state of #{user[:state]}."
+end
+
+def can_user_drive(user)
+	puts user[:age] >= 16 ? "Yay! You are old enough to drive!" : "You're too young to drive, sorry!"
+end
+
+def go_to_park(user)
+	if user[:age] >= 16
+		puts "Can you drive me to the park?"
+		take_to_store = gets.chomp.downcase
+		puts take_to_store == "yes" ? "Great! Let me grab my frisbee." : "You suck!!"
+	else
+		puts "I guess you can't take me to the park. I'll find someone else."
+	end
+end
+
+def come_back_here_message(user)
+	puts "Hey #{user[:name]}, where are you going?"
+	puts "Yo 'Dude', what's up? Come back here!"
+end
+
+def grocery_store
+	grocery_list = ["milk", "bread", "chips", "bacon", "wine", "cereal"]
+
+	puts "Let's go to the grocery store. Here's the list of things we need:"
+
+	# grocery_list.each { |list| puts list, " " }
+	puts grocery_list.join(", ")
+
+	random_item = grocery_list.sample
+	puts "Did you grab the #{random_item}?"
+	grab_random_item = gets.chomp.downcase
+
+	if grab_random_item == "yes"
+		grocery_list.delete(random_item)
+	else
+		puts "Can you please go get it? Thank you :)"
+	end
+
+	puts "Here's what's left:"
+	puts grocery_list.join(", ")
+
+	puts "Oh yeah, don't forget the eggs!"
+	grocery_list << "eggs"	
+end
+
+def goodbye
+	puts "You're fun! Thanks for talking with me today!"	
 end
 
 
 
+
+greeting
+the_user = get_user_input
+nickname_message(the_user)
+age_based_message(the_user)
+great_great_grandparent(the_user)
+user_city_state(the_user)
+can_user_drive(the_user)
+go_to_park(the_user)
+come_back_here_message(the_user)
+grocery_store
+goodbye
 
