@@ -35,7 +35,7 @@ def age_based_message(age)
 		puts "Did you know that you'll be 75 in #{75 - age} year(s)."
 	when age > 75
 		puts "Did you know that you turned 75 #{age - 75} year(s) ago."
-	when age == 75
+	else
 		puts "You're 75!"
 	end
 end
