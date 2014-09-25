@@ -132,3 +132,23 @@ come_back_here_message(the_user)
 grocery_store
 goodbye
 
+
+
+
+
+
+read("grocery_list.txt")
+grocery_list.chomp
+# grocery_list.gsub("\n", "") -----> this is what .chomp does
+grocery_list = grocery_list.split(", ")
+grocery_list.each { |item| item.downcase! } #this line and next line do the same thing
+grocery_list.map! { |item| item.downcase }
+
+
+
+
+# grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
+# grocery_list.map! { |item| item.downcase }
+
+# grocery_list.shift
+# IO.write("new_grocery_list.txt" , grocery_list.join(", "))
