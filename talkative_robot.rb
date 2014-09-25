@@ -5,7 +5,7 @@ def greeting
 end
 
 def author_info
-	author = { name: "Ashley", age: 33, gender: "girl" }, nickname: "Ash", 
+	author = { name: "Ashley", age: 33, gender: "girl", nickname: "A", 
 			   city: "Atlanta", state: "GA" }
 
 	author
@@ -104,7 +104,8 @@ def come_back_here_message(user)
 end
 
 def grocery_store
-	grocery_list = ["milk", "bread", "chips", "bacon", "wine", "cereal"]
+	grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
+	grocery_list.map! { |item| item.downcase }
 
 	puts "Let's go to the grocery store. Here's the list of things we need:"
 
@@ -127,10 +128,19 @@ def grocery_store
 	end
 
 	puts "Here's what's left:"
-	puts grocery_list.join(", ")
+	
+	item_number = 1
+	while item_number < grocery_list.count
+		grocery_list.each do |item|	
+			puts "Item #{item_number} -- #{item}"
+			item_number += 1
+		end
+	end
 
 	puts "Oh yeah, don't forget the eggs!"
-	grocery_list << "eggs"	
+	grocery_list << "eggs"
+
+	IO.write("new_grocery_list.txt", grocery_list.join(", "))	
 end
 
 def goodbye
