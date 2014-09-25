@@ -4,62 +4,62 @@ def greeting
 	puts "Hi there!"
 end
 
-def user_input
+def get_user_input
 	user = {}
 
 	puts "What's your name?"
-	user[:user_name] = gets.chomp.capitalize
+	user[:name] = gets.chomp.capitalize
 
 	puts "How old are you?"
-	user[:user_age] = gets.chomp.to_i
+	user[:age] = gets.chomp.to_i
 
 	puts "Are you a girl or boy?"
-	user[:user_gender] = gets.chomp.downcase
+	user[:gender] = gets.chomp.downcase
 
 	user
 end
 
-def nickname(user)
-	user[:nickname] = user[:user_name].chars.first
+def nickname_message(user)
+	user[:nickname] = user[:name].chars.first
 
-	puts "#{user[:user_name]}, do you mind if I call you #{user[:nickname]}?"
+	puts "#{user[:name]}, do you mind if I call you #{user[:nickname]}?"
 	answer = gets.chomp.downcase
 
 	puts "Great!" unless answer == "yes"
 
 	puts "Too bad. I'm going to anyways!" if answer == "yes"
 
-	user[:user_name] = user[:nickname]
+	user[:name] = user[:nickname]
 
-	puts "Nice to meet you, #{user[:user_name]}!"
+	puts "Nice to meet you, #{user[:name]}!"
 end
 
 def age_based_message(user)
-	puts "I'm 33 years old too!" if user[:user_age] == 33
+	puts "I'm 33 years old too!" if user[:age] == 33
 
 	case
-	when user[:user_age] < 75
-		puts "Did you know that you'll be 75 in #{75 - user[:user_age]} year(s)."
-	when user[:user_age] > 75
-		puts "Did you know that you turned 75 #{user[:user_age] - 75} year(s) ago."
+	when user[:age] < 75
+		puts "Did you know that you'll be 75 in #{75 - user[:age]} year(s)."
+	when user[:age] > 75
+		puts "Did you know that you turned 75 #{user[:age] - 75} year(s) ago."
 	else
 		puts "You're 75!"
 	end
 
-	puts "You sure are a young #{user[:user_gender]}." if user[:user_age] <= 20 
+	puts "You sure are a young #{user[:gender]}." if user[:age] <= 20 
 end
 
 def great_great_grandparent(user)
-	if (user[:user_age] >= 100) && (user[:user_gender] == "girl")
+	if (user[:age] >= 100) && (user[:gender] == "girl")
 	puts "Wow, you're old! You must be a great-great grandmother." 
-	elsif (user[:user_age] >= 100) && (user[:user_gender] == "boy")
+	elsif (user[:age] >= 100) && (user[:gender] == "boy")
 		puts "Wow, you're old! You must be a great-great grandfather."
 	else
 		puts "So, you're not old enough to be a great-great grandparent."
 	end
 end
 
-def get_user_city_state(user)
+def user_city_state(user)
 	puts "What city do you live in?"
 	user[:city] = gets.chomp.capitalize
 
@@ -69,14 +69,23 @@ def get_user_city_state(user)
 	puts "That's right! #{user[:city]} is in the state of #{user[:state]}."
 end
 
-def go_to_park(age)
-	if age >= 16
+def can_user_drive(user)
+	puts user[:age] >= 16 ? "Yay! You are old enough to drive!" : "You're too young to drive, sorry!"
+end
+
+def go_to_park(user)
+	if user[:age] >= 16
 		puts "Can you drive me to the park?"
 		take_to_store = gets.chomp.downcase
 		puts take_to_store == "yes" ? "Great! Let me grab my frisbee." : "You suck!!"
 	else
 		puts "I guess you can't take me to the park. I'll find someone else."
 	end
+end
+
+def come_back_here_message(user)
+	puts "Hey #{user[:name]}, where are you going?"
+	puts "Yo 'Dude', what's up? Come back here!"
 end
 
 def grocery_store
@@ -112,15 +121,14 @@ end
 
 
 greeting
-the_user = user_input
-nickname(the_user)
+the_user = get_user_input
+nickname_message(the_user)
 age_based_message(the_user)
 great_great_grandparent(the_user)
-get_user_city_state(the_user)
-puts the_user[:user_age] >= 16 ? "Yay! You are old enough to drive!" : "You're too young to drive, sorry!"
-go_to_park(the_user[:user_age])
-puts "Hey #{the_user[:user_name]}, where are you going?"
-puts "Yo 'Dude', what's up? Come back here!"
+user_city_state(the_user)
+can_user_drive(the_user)
+go_to_park(the_user)
+come_back_here_message(the_user)
 grocery_store
 goodbye
 
