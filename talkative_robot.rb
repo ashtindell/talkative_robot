@@ -104,49 +104,58 @@ def come_back_here_message(user)
 end
 
 def grocery_store
-	grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
-	grocery_list.map! { |item| item.downcase }
-
 	puts "Let's go to the grocery store. Here's the list of things we need:"
 
-	item_number = 1
-	while item_number < grocery_list.count
-		grocery_list.each do |item|	
-			puts "Item #{item_number} -- #{item}"
-			item_number += 1
-		end
-	end
+	grocery_list = read_grocery_list
 
-	random_item = grocery_list.sample
-	puts "Did you grab the #{random_item}?"
-	grab_random_item = gets.chomp.downcase
+	print_groceries(grocery_list)
 
-	if grab_random_item == "yes"
-		grocery_list.delete(random_item)
-	else
-		puts "Can you please go get it? Thank you :)"
-	end
+	pick_random_grocery_item(grocery_list)
 
 	puts "Here's what's left:"
 	
+	print_groceries(grocery_list)
+end
+
+def read_grocery_list
+	grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
+	grocery_list.map! { |item| item.downcase }
+end
+
+def print_groceries(groceries)
 	item_number = 1
-	while item_number < grocery_list.count
-		grocery_list.each do |item|	
+	while item_number < groceries.count
+		groceries.each do |item|	
 			puts "Item #{item_number} -- #{item}"
 			item_number += 1
 		end
 	end
+end
 
+def pick_random_grocery_item(groceries)
+	random_item = groceries.sample
+	puts "Did you grab the #{random_item}? (yes or no)"
+	grab_random_item = gets.chomp.downcase
+
+	if grab_random_item == "yes"
+		groceries.delete(random_item)
+	else
+		puts "Can you please go get it? Thank you :)"
+	end	
+end
+
+def add_grocery_item(groceries)
 	puts "Oh yeah, don't forget the eggs!"
 	grocery_list << "eggs"
+end
 
-	IO.write("new_grocery_list.txt", grocery_list.join(", "))	
+def updated_grocery_list
+	new_grocery_list = IO.write("new_grocery_list.txt", grocery_list.join(", "))	
 end
 
 def goodbye
 	puts "You're fun! Thanks for talking with me today!"	
 end
-
 
 
 the_author = author_info
@@ -155,9 +164,9 @@ the_user = get_user_input
 nickname_message(the_user)
 age_based_message(the_user)
 great_great_grandparent(the_user)
-user_city_state(the_user)
 can_user_drive(the_user)
 go_to_park(the_user)
+user_city_state(the_user)
 come_back_here_message(the_user)
 grocery_store
 goodbye
