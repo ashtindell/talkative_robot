@@ -4,6 +4,13 @@ def greeting
 	puts "Hi there!"
 end
 
+def author_info
+	author = { name: "Ashley", age: 33, gender: "girl", nickname: "A", 
+			   city: "Atlanta", state: "GA" }
+
+	author
+end
+
 def get_user_input
 	user = {}
 
@@ -17,6 +24,14 @@ def get_user_input
 	user[:gender] = gets.chomp.downcase
 
 	user
+end
+
+def get_author(array_of_people)
+	array_of_people.reject { |person| person[:name] != "Ashley" }.first
+end
+
+def select_by_name(list_of_users, name)
+	list_of_users.select { |person| person[:name] == name }.first
 end
 
 def nickname_message(user)
@@ -89,12 +104,18 @@ def come_back_here_message(user)
 end
 
 def grocery_store
-	grocery_list = ["milk", "bread", "chips", "bacon", "wine", "cereal"]
+	grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
+	grocery_list.map! { |item| item.downcase }
 
 	puts "Let's go to the grocery store. Here's the list of things we need:"
 
-	# grocery_list.each { |list| puts list, " " }
-	puts grocery_list.join(", ")
+	item_number = 1
+	while item_number < grocery_list.count
+		grocery_list.each do |item|	
+			puts "Item #{item_number} -- #{item}"
+			item_number += 1
+		end
+	end
 
 	random_item = grocery_list.sample
 	puts "Did you grab the #{random_item}?"
@@ -107,10 +128,19 @@ def grocery_store
 	end
 
 	puts "Here's what's left:"
-	puts grocery_list.join(", ")
+	
+	item_number = 1
+	while item_number < grocery_list.count
+		grocery_list.each do |item|	
+			puts "Item #{item_number} -- #{item}"
+			item_number += 1
+		end
+	end
 
 	puts "Oh yeah, don't forget the eggs!"
-	grocery_list << "eggs"	
+	grocery_list << "eggs"
+
+	IO.write("new_grocery_list.txt", grocery_list.join(", "))	
 end
 
 def goodbye
@@ -119,7 +149,7 @@ end
 
 
 
-
+the_author = author_info
 greeting
 the_user = get_user_input
 nickname_message(the_user)
@@ -131,4 +161,3 @@ go_to_park(the_user)
 come_back_here_message(the_user)
 grocery_store
 goodbye
-
