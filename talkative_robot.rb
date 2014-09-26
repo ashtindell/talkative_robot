@@ -1,11 +1,11 @@
 require 'pry'
 
-def greeting
-	puts "Hi there!"
+def greeting(author)
+	puts "Hi there! My name is #{author[:name]}, but I go by #{author[:nickname]}."
 end
 
 def author_info
-	author = { name: "Ashley", age: 33, gender: "girl", nickname: "A", 
+	author = { name: "Ashley", age: 33, gender: "girl", nickname: "Ash", 
 			   city: "Atlanta", state: "GA" }
 
 	author
@@ -30,8 +30,8 @@ def get_author(array_of_people)
 	array_of_people.reject { |person| person[:name] != "Ashley" }.first
 end
 
-def select_by_name(list_of_users, name)
-	list_of_users.select { |person| person[:name] == name }.first
+def select_by_name(list_of_users, first_name)
+	list_of_users.select { |person| person[:name] == first_name }.first
 end
 
 def nickname_message(user)
@@ -112,9 +112,13 @@ def grocery_store
 
 	pick_random_grocery_item(grocery_list)
 
+	add_grocery_item(grocery_list)
+
 	puts "Here's what's left:"
 	
 	print_groceries(grocery_list)
+
+	update_grocery_list(grocery_list)
 end
 
 def read_grocery_list
@@ -146,11 +150,11 @@ end
 
 def add_grocery_item(groceries)
 	puts "Oh yeah, don't forget the eggs!"
-	grocery_list << "eggs"
+	groceries << "eggs"
 end
 
-def updated_grocery_list
-	new_grocery_list = IO.write("new_grocery_list.txt", grocery_list.join(", "))	
+def update_grocery_list(groceries)
+	groceries = IO.write("new_grocery_list.txt", groceries.join(", "))	
 end
 
 def goodbye
@@ -159,7 +163,7 @@ end
 
 
 the_author = author_info
-greeting
+greeting(the_author)
 the_user = get_user_input
 nickname_message(the_user)
 age_based_message(the_user)
