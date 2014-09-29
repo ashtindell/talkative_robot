@@ -1,7 +1,15 @@
 require 'pry'
+require 'csv'
 
-def greeting
-	puts "Hi there!"
+def greeting(author)
+	puts "Hi there! My name is #{author[:name]}, but I go by #{author[:nickname]}."
+end
+
+def author_info
+	author = { name: "Ashley", age: 33, gender: "girl", nickname: "Ash", 
+			   city: "Atlanta", state: "GA" }
+
+	author
 end
 
 def get_user_input
@@ -19,6 +27,14 @@ def get_user_input
 	user
 end
 
+def get_author(array_of_people)
+	array_of_people.reject { |person| person[:name] != "Ashley" }.first
+end
+
+def select_by_name(list_of_users, first_name)
+	list_of_users.select { |person| person[:name] == first_name }.first
+end
+
 def nickname_message(user)
 	user[:nickname] = user[:name].chars.first
 
@@ -26,11 +42,9 @@ def nickname_message(user)
 	answer = gets.chomp.downcase
 
 	puts "Great!" unless answer == "yes"
-
 	puts "Too bad. I'm going to anyways!" if answer == "yes"
 
 	user[:name] = user[:nickname]
-
 	puts "Nice to meet you, #{user[:name]}!"
 end
 
@@ -51,7 +65,7 @@ end
 
 def great_great_grandparent(user)
 	if (user[:age] >= 100) && (user[:gender] == "girl")
-	puts "Wow, you're old! You must be a great-great grandmother." 
+		puts "Wow, you're old! You must be a great-great grandmother." 
 	elsif (user[:age] >= 100) && (user[:gender] == "boy")
 		puts "Wow, you're old! You must be a great-great grandfather."
 	else
@@ -89,28 +103,52 @@ def come_back_here_message(user)
 end
 
 def grocery_store
-	grocery_list = ["milk", "bread", "chips", "bacon", "wine", "cereal"]
-
 	puts "Let's go to the grocery store. Here's the list of things we need:"
-
-	# grocery_list.each { |list| puts list, " " }
-	puts grocery_list.join(", ")
-
-	random_item = grocery_list.sample
-	puts "Did you grab the #{random_item}?"
-	grab_random_item = gets.chomp.downcase
-
-	if grab_random_item == "yes"
-		grocery_list.delete(random_item)
-	else
-		puts "Can you please go get it? Thank you :)"
-	end
-
+	grocery_list = read_grocery_list
+	print_groceries(grocery_list)
+	pick_random_grocery_item(grocery_list)
+	add_grocery_item(grocery_list)
 	puts "Here's what's left:"
-	puts grocery_list.join(", ")
+	print_groceries(grocery_list)
+	write_grocery_list_csv(grocery_list)
+	update_grocery_list(grocery_list)
+end
 
+def read_grocery_list
+	grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
+	grocery_list.map! { |item| item.downcase }
+end
+
+def print_groceries(groceries)
+	item = groceries
+	groceries.each_index { |i| puts "Item #{i + 1} -- #{groceries[i]}" }
+end
+
+def pick_random_grocery_item(groceries)
+	random_item = groceries.sample
+	puts "Did you grab the #{random_item}? (yes or no)"
+	grab_random_item = gets.chomp.downcase
+	puts grab_random_item == "yes" ? groceries.delete(random_item) : "Can you please go get it? Thank you :)"
+end
+
+def add_grocery_item(groceries)
 	puts "Oh yeah, don't forget the eggs!"
-	grocery_list << "eggs"	
+	groceries << "eggs"
+end
+
+def update_grocery_list(groceries)
+	groceries = IO.write("new_grocery_list.txt", groceries.join(", "))	
+end
+
+
+def write_grocery_list_csv(groceries)
+	CSV.open("new_grocery_list.csv", "w") do |csv|
+		csv << ["Item Number", "Item Name"] # header columns
+		groceries.each_index do |i| 
+		csv << ["#{i + 1}", groceries[i]]
+	end
+end
+
 end
 
 def goodbye
@@ -118,37 +156,15 @@ def goodbye
 end
 
 
-
-
-greeting
+the_author = author_info
+greeting(the_author)
 the_user = get_user_input
 nickname_message(the_user)
 age_based_message(the_user)
 great_great_grandparent(the_user)
-user_city_state(the_user)
 can_user_drive(the_user)
 go_to_park(the_user)
+user_city_state(the_user)
 come_back_here_message(the_user)
 grocery_store
 goodbye
-
-
-
-
-
-
-read("grocery_list.txt")
-grocery_list.chomp
-# grocery_list.gsub("\n", "") -----> this is what .chomp does
-grocery_list = grocery_list.split(", ")
-grocery_list.each { |item| item.downcase! } #this line and next line do the same thing
-grocery_list.map! { |item| item.downcase }
-
-
-
-
-# grocery_list = IO.read("grocery_list.txt").chomp.split(", ")
-# grocery_list.map! { |item| item.downcase }
-
-# grocery_list.shift
-# IO.write("new_grocery_list.txt" , grocery_list.join(", "))
