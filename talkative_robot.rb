@@ -143,13 +143,22 @@ end
 
 def write_grocery_list_csv(groceries)
 	CSV.open("new_grocery_list.csv", "w") do |csv|
-		csv << ["Item Number", "Item Name"] # header columns
+		csv << ["Item Number", "Item Name"]
 		groceries.each_index do |i| 
-		csv << ["#{i + 1}", groceries[i]]
+			csv << ["#{i + 1}", groceries[i]]
+		end
 	end
 end
 
-end
+# I still need to add this to groceries
+# def read_grocery_list_csv(groceries)
+# 	col_data = []
+# 	CSV.foreach("new_grocery_list.csv") do |row|
+# 		col_data << row[1]
+# 	end
+# 	col_data.shift
+# 	puts col_data
+# end
 
 def goodbye
 	puts "You're fun! Thanks for talking with me today!"	
