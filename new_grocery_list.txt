@@ -1,0 +1,2 @@
+milk, bread, wine, coffee, cereal, eggs
+
