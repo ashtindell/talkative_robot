@@ -4,7 +4,7 @@ require 'csv'
 class Person
 	def initialize(args)
 		@name 	  = args[:name]
-		@age 	  = args[:age]
+		@age 	  	= args[:age]
 		@gender   = args[:gender]
 		@nickname = args[:nickname]
 		@city     = args[:city]
@@ -17,21 +17,14 @@ class Author < Person
 		super
 	end
 
-	def self.author_info
-		author = { 
-				name: "Ashley", 
-				age: 33, 
-				gender: "girl", 
-				nickname: "Ash", 
-				city: "Atlanta", 
-				state: "GA"
-			}
+	def self.info
+		author = { name: "Ashley", age: 33, gender: "girl", nickname: "Ash", 
+				  		 city: "Atlanta", state: "GA" }
 	end
 
 	def greeting
 		puts "Hi there! My name is #{@name}, but I go by #{@nickname}."
 	end
-
 end
 
 class User < Person
@@ -59,8 +52,13 @@ class User < Person
 		puts "#{@name}, do you mind if I call you #{@nickname}?"
 		answer = gets.chomp.downcase
 
-		puts "Great!" unless answer == "yes"
-		puts "Too bad. I'm going to anyways!" if answer == "yes"
+		@answer = answer
+		def yes?
+			@answer == "yes"
+		end
+
+		puts "Great!" unless yes?
+		puts "Too bad. I'm going to anyways!" if yes?
 
 		@name = @nickname
 		puts "Nice to meet you, #{@name}!"
@@ -82,9 +80,21 @@ class User < Person
 	end
 
 	def great_great_grandparent
-		if (@age >= 100) && (@gender == "girl")
-			puts "Wow, you're old! You must be a great-great grandmother." 
-		elsif (@age >= 100) && (@gender == "boy")
+		def old?
+			@age >= 100
+		end
+
+		def girl?
+			@gender == "girl"
+		end
+
+		def boy?
+			@gender == "boy"
+		end
+
+		if old? && girl?
+			puts "Wow, you're old! You must be a great-great grandmother."
+		elsif old? && boy?
 			puts "Wow, you're old! You must be a great-great grandfather."
 		else
 			puts "So, you're not old enough to be a great-great grandparent."
@@ -101,17 +111,22 @@ class User < Person
 		puts "That's right! #{@city} is in the state of #{@state}."
 	end
 
-	def can_user_drive
-		puts @age >= 16 ? "Yay! You are old enough to drive!" : "You're too young to drive, sorry!"
+	def can_drive?
+		@age >= 16
+	end
+
+	def can_drive_message
+		puts "Yay! You are old enough to drive!" if can_drive?
+		puts "You're too young to drive, sorry!" unless can_drive?
 	end
 
 	def go_to_park
-		if @age >= 16
+		if can_drive?
 			puts "Can you drive me to the park?"
-			take_to_store = gets.chomp.downcase
-			puts take_to_store == "yes" ? "Great! Let me grab my frisbee." : "You suck!!"
+			drive_to_park = gets.chomp.downcase
+			puts drive_to_park == "yes" ? "Great! Let me grab my frisbee." : "You suck!"
 		else
-			puts "I guess you can't take me to the park. I'll find someone else."
+			puts "I guess you can't drive me to the park. I'll find someone else."
 		end
 	end
 
@@ -119,7 +134,6 @@ class User < Person
 		puts "Hey #{@name}, where are you going?"
 		puts "Yo 'Dude', what's up? Come back here!"
 	end
-
 end
 
 class GroceryList
@@ -136,7 +150,7 @@ class GroceryList
 		puts "Here's what's left:"
 		print_groceries
 		write_grocery_list_csv
-		update_grocery_list
+		write_grocery_list_txt
 	end
 
 	def read_list
@@ -160,10 +174,9 @@ class GroceryList
 		@items << "eggs"
 	end
 
-	def update_grocery_list
+	def write_grocery_list_txt
 		IO.write("new_grocery_list.txt", @items.join(", "))	
 	end
-
 
 	def write_grocery_list_csv
 		CSV.open("new_grocery_list.csv", "w") do |csv|
@@ -173,16 +186,13 @@ class GroceryList
 			end
 		end
 	end
-
 end
-
 
 def goodbye
 	puts "You're fun! Thanks for talking with me today!"	
 end
 
-
-the_author = Author.author_info
+the_author = Author.info
 @author = Author.new(the_author)
 @author.greeting
 the_user = User.get_input
@@ -190,16 +200,10 @@ the_user = User.get_input
 @user.nickname_message
 @user.age_based_message
 @user.great_great_grandparent
-@user.can_user_drive
+@user.can_drive_message
 @user.go_to_park
 @user.city_state
 @user.come_back_here_message
 @grocery_list = GroceryList.new(@items)
 @grocery_list.go_to_grocery_store
 goodbye
-
-
-
-
-
-

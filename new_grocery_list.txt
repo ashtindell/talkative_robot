@@ -1,1 +1,1 @@
-milk, bread, wine, butter, coffee, cereal, eggs
+milk, bread, wine, coffee, cereal, eggs
