@@ -140,7 +140,6 @@ def update_grocery_list(groceries)
 	groceries = IO.write("new_grocery_list.txt", groceries.join(", "))	
 end
 
-
 def write_grocery_list_csv(groceries)
 	CSV.open("new_grocery_list.csv", "w") do |csv|
 		csv << ["Item Number", "Item Name"]
