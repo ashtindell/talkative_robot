@@ -7,8 +7,8 @@ class GroceryList
   def go_to_grocery_store
     puts "Let's go to the grocery store. Here's the list of things we need:"
     print_groceries
-    pick_random_grocery_item
-    grab_random_grocery_item
+    random_item
+    grab_random_item
     puts add_grocery_item
     puts "Here's what's left:"
     print_groceries
@@ -25,14 +25,20 @@ class GroceryList
     @items.each_index { |i| puts "Item #{i + 1} -- #{@items[i]}" }
   end
 
-  def pick_random_grocery_item
-    @random_item = @items.sample    
+  # new
+  def random_item
+    @random_item ||= @items.sample
   end
 
-  def grab_random_grocery_item
-    puts "Did you grab the #{@random_item}? (yes or no)"
-    grab_random_item = gets.chomp.downcase
-    puts grab_random_item == "yes" ? @items.delete(@random_item) : "Can you please go get it? Thank you :)"
+  def grab_random_item
+      puts "Did you grab the #{random_item}? (yes or no)"
+      grab_random_item = gets.chomp.downcase
+      if grab_random_item == "yes"
+        @items.delete(random_item)
+        puts "Thanks!"
+      else
+        puts "Can you please go get it? Thank you:)"
+      end
   end
 
   def add_grocery_item

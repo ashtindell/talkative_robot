@@ -33,7 +33,7 @@ describe "Person" do
 
   describe "great_great_grandparent" do
     context "old? && girl?" do
-      it "returns proper message" do
+      it "returns is great-great grandmother" do
         person = Person.new( { age: 100, gender: "girl" } )
         expected_message = "Wow, you're old! You must be a great-great grandmother."
         expect(person.great_great_grandparent).to eq(expected_message)
@@ -41,15 +41,15 @@ describe "Person" do
     end
 
     context "old? && boy?" do
-      it "returns proper message" do
+      it "returns is great-great grandfather" do
         person = Person.new( { age: 100, gender: "boy" } )
         expected_message = "Wow, you're old! You must be a great-great grandfather."
         expect(person.great_great_grandparent).to eq(expected_message)
       end
     end
 
-    context "" do
-      it "returns proper message" do
+    context "....." do
+      it "returns isn't great-great grandparent" do
         expected_message = "So, you're not old enough to be a great-great grandparent."
         expect(person.great_great_grandparent).to eq(expected_message)
       end

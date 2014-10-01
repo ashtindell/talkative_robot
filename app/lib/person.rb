@@ -35,7 +35,7 @@ class Person
     "Great!" unless yes?
     "Too bad. I'm going to anyways!" if yes?
 
-    @name = @nickname
+    # @name = @nickname
     "Nice to meet you, #{@name}!"
   end
 
@@ -52,19 +52,19 @@ class Person
     end
   end
 
+  def old?
+    @age >= 100
+  end
+
+  def girl?
+    @gender == "girl"
+  end
+
+  def boy?
+    @gender == "boy"
+  end
+
   def great_great_grandparent
-    def old?
-      @age >= 100
-    end
-
-    def girl?
-      @gender == "girl"
-    end
-
-    def boy?
-      @gender == "boy"
-    end
-
     if old? && girl?
       "Wow, you're old! You must be a great-great grandmother."
     elsif old? && boy?
